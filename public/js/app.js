@@ -1955,7 +1955,7 @@ __webpack_require__.r(__webpack_exports__);
         body: ''
       },
       article_id: '',
-      pagination: {},
+      // pagination: {},
       edit: false
     };
   },
@@ -1968,11 +1968,10 @@ __webpack_require__.r(__webpack_exports__);
 
       var vm = this;
       page_url = page_url || 'api/articles';
-      fetch(page_url).then(function (res) {
+      fetch('api/articles').then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this.articles = res.data;
-        vm.makePagination(res.meta, res.links);
+        _this.articles = res.data; // vm.makePagination(res.meta,  res.links);
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -2034,8 +2033,7 @@ __webpack_require__.r(__webpack_exports__);
           return res.json();
         }).then(function (data) {
           _this3.article.title = '';
-          _this3.article.body = '';
-          alert('Article Updated');
+          _this3.article.body = ''; // alert('Article Updated');
 
           _this3.fetchArticles();
         })["catch"](function (err) {
@@ -33253,67 +33251,6 @@ var render = function() {
           )
         ]
       ),
-      _vm._v(" "),
-      _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
-        _c("ul", { staticClass: "pagination" }, [
-          _c(
-            "li",
-            {
-              staticClass: "page-item",
-              class: [{ disabled: !_vm.pagination.prev_page_url }]
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "page-link",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      return _vm.fetchArticles(_vm.pagination.prev_page_url)
-                    }
-                  }
-                },
-                [_vm._v("Previous")]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("li", { staticClass: "page-item disabled" }, [
-            _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-              _vm._v(
-                "Page " +
-                  _vm._s(_vm.pagination.current_page) +
-                  " of " +
-                  _vm._s(_vm.pagination.last_page)
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "page-item",
-              class: [{ disabled: !_vm.pagination.next_page_url }]
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "page-link",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      return _vm.fetchArticles(_vm.pagination.next_page_url)
-                    }
-                  }
-                },
-                [_vm._v("Next")]
-              )
-            ]
-          )
-        ])
-      ]),
       _vm._v(" "),
       _vm._l(_vm.articles, function(article) {
         return _c(
