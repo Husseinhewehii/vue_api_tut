@@ -45591,7 +45591,8 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // Vue.component('articles', require('./components/Articles.vue'));
 
 Vue.component('articles', __webpack_require__(/*! ./components/Articles.vue */ "./resources/assets/js/components/Articles.vue")["default"]);
-Vue.component('navbar', __webpack_require__(/*! ./components/Navbar.vue */ "./resources/assets/js/components/Navbar.vue")["default"]);
+Vue.component('navbar', __webpack_require__(/*! ./components/Navbar.vue */ "./resources/assets/js/components/Navbar.vue")["default"]); // Vue.component('agencies', require('./components/Agencies.vue').default);
+
 var app = new Vue({
   el: '#app'
 });
