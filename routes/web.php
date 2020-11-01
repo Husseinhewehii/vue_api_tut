@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/vue-test', function () {
+    return view('vue_test');
+});
