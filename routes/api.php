@@ -34,3 +34,6 @@ Route::put('article', 'ArticleController@store');
 Route::delete('article/{id}', 'ArticleController@destroy');
 
 
+Route::get('skills', function(){
+    return ['Vue','PHP', 'Laravel','Ajax','JavaScript'];
+});

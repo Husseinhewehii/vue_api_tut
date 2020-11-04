@@ -1955,7 +1955,7 @@ __webpack_require__.r(__webpack_exports__);
         body: ''
       },
       article_id: '',
-      // pagination: {},
+      pagination: {},
       edit: false
     };
   },
@@ -1968,10 +1968,11 @@ __webpack_require__.r(__webpack_exports__);
 
       var vm = this;
       page_url = page_url || 'api/articles';
-      fetch('api/articles').then(function (res) {
+      fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this.articles = res.data; // vm.makePagination(res.meta,  res.links);
+        _this.articles = res.data;
+        vm.makePagination(res.meta, res.links);
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -2033,7 +2034,8 @@ __webpack_require__.r(__webpack_exports__);
           return res.json();
         }).then(function (data) {
           _this3.article.title = '';
-          _this3.article.body = ''; // alert('Article Updated');
+          _this3.article.body = '';
+          alert('Article Updated');
 
           _this3.fetchArticles();
         })["catch"](function (err) {
@@ -33252,6 +33254,67 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
+      _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+        _c("ul", { staticClass: "pagination" }, [
+          _c(
+            "li",
+            {
+              staticClass: "page-item",
+              class: [{ disabled: !_vm.pagination.prev_page_url }]
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      return _vm.fetchArticles(_vm.pagination.prev_page_url)
+                    }
+                  }
+                },
+                [_vm._v("Previous")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("li", { staticClass: "page-item disabled" }, [
+            _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
+              _vm._v(
+                "Page " +
+                  _vm._s(_vm.pagination.current_page) +
+                  " of " +
+                  _vm._s(_vm.pagination.last_page)
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "page-item",
+              class: [{ disabled: !_vm.pagination.next_page_url }]
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      return _vm.fetchArticles(_vm.pagination.next_page_url)
+                    }
+                  }
+                },
+                [_vm._v("Next")]
+              )
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
       _vm._l(_vm.articles, function(article) {
         return _c(
           "div",
@@ -45512,6 +45575,12 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -45527,11 +45596,188 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
  */
 // Vue.component('articles', require('./components/Articles.vue'));
 
+Vue.component('progress-view', {
+  data: function data() {
+    return {
+      completionRate: 1202
+    };
+  }
+}); // window.Event = new Vue();
+
+window.Event = new ( /*#__PURE__*/function () {
+  function _class() {
+    _classCallCheck(this, _class);
+
+    this.vue = new Vue();
+  }
+
+  _createClass(_class, [{
+    key: "fire",
+    value: function fire(event) {
+      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      this.vue.$emit(event, data);
+    }
+  }, {
+    key: "listen",
+    value: function listen(event, callback) {
+      this.vue.$on(event, callback);
+    }
+  }]);
+
+  return _class;
+}())();
+Vue.component('coupon', {
+  template: '<input placeholder="enter coupon" @blur="onCouponAngewandt">',
+  methods: {
+    onCouponAngewandt: function onCouponAngewandt() {
+      // this.$emit('applied');
+      Event.fire('applied');
+    }
+  }
+});
+Vue.component('tabs', {
+  template: "\n    <div>\n        <div class=\"tabs\">\n            <ul>\n                <li  v-for=\"tab in tabs\" :class=\"{'is-active':tab.isActive}\">\n                    <a :href=tab.href @click=\"selectTab(tab)\">{{tab.name}}</a>\n                </li>\n            </ul>\n        </div>\n\n        <div class=\"tabs-details\">\n            <slot></slot>\n        </div>\n    </div>\n    ",
+  // mounted(){
+  //     console.log(this.$children);
+  // }
+  data: function data() {
+    return {
+      tabs: []
+    };
+  },
+  created: function created() {
+    this.tabs = this.$children;
+  },
+  methods: {
+    selectTab: function selectTab(selectedTab) {
+      this.tabs.forEach(function (tab) {
+        tab.isActive = tab.name == selectedTab.name;
+      });
+    }
+  }
+});
+Vue.component('tab', {
+  template: "\n    <div v-show=\"isActive\">\n        <slot></slot>\n    </div>\n    ",
+  props: {
+    name: {
+      required: true
+    },
+    selected: {
+      "default": false
+    }
+  },
+  data: function data() {
+    return {
+      isActive: false
+    };
+  },
+  computed: {
+    href: function href() {
+      return '#' + this.name.toLowerCase().replace(/ /g, '-');
+    }
+  },
+  mounted: function mounted() {
+    this.isActive = this.selected;
+  }
+}); // Vue.component('modal',{
+//     props:["title","body"],
+//     data(){
+//         return{
+//             zeigModal:true
+//         }
+//     },
+//     template:`
+//         <div class="modal is-active" v-show="zeigModal">
+//             <div class="modal-background"></div>
+//             <div class="modal-content">
+//               <div class="box">
+//                   <p>
+//                       <slot></slot>
+//                   </p>
+//               </div>
+//             </div>
+//             <button class="modal-close is-large" @click="$emit('close')" aria-label="close"></button>
+//         </div>
+//         `
+// })
+
+Vue.component('modal', {
+  data: function data() {
+    return {
+      zeigModal: true
+    };
+  },
+  template: "\n        <div class=\"modal is-active\">\n            <div class=\"modal-background\"></div>\n            <div class=\"modal-card\">\n            <header class=\"modal-card-head\">\n                <p class=\"modal-card-title\">\n                <slot name=\"header\"></slot>\n                </p>\n                <button class=\"delete\" aria-label=\"close\"></button>\n            </header>\n            <section class=\"modal-card-body\">\n                <slot></slot>\n            </section>\n            <footer class=\"modal-card-foot\">\n                <slot name=\"footer\"></slot>\n            </footer>\n            </div>\n        </div>\n        "
+});
+Vue.component('bulma-article', {
+  props: ["title", "body"],
+  data: function data() {
+    return {
+      isVisible: true
+    };
+  },
+  template: "\n            <article class=\"message\" v-show=isVisible>\n        <div class=\"message-header\">\n            <p>{{title}}</p>\n            <button class=\"delete\" @click=\"isVisible = false\" aria-label=\"delete\"></button>\n        </div>\n        <div class=\"message-body\">\n            {{body}}\n        </div>\n        </article>\n    ",
+  methods: {
+    hideModal: function hideModal() {
+      this.isVisible = false;
+    }
+  }
+});
 Vue.component('articles', __webpack_require__(/*! ./components/Articles.vue */ "./resources/assets/js/components/Articles.vue")["default"]);
-Vue.component('navbar', __webpack_require__(/*! ./components/Navbar.vue */ "./resources/assets/js/components/Navbar.vue")["default"]); // Vue.component('agencies', require('./components/Agencies.vue').default);
+Vue.component('navbar', __webpack_require__(/*! ./components/Navbar.vue */ "./resources/assets/js/components/Navbar.vue")["default"]);
+Vue.component('task-list', {
+  template: '<div><task v-for="task in tasks">{{task.description}}</task></div>',
+  data: function data() {
+    return {
+      msg: "herzlich willkommen",
+      tasks: [{
+        description: 'go to store',
+        completed: false
+      }, {
+        description: 'go to shop',
+        completed: false
+      }, {
+        description: ' hospital',
+        completed: true
+      }, {
+        description: 'train in gym',
+        completed: true
+      }, {
+        description: 'travel from station',
+        completed: false
+      }]
+    };
+  }
+});
+Vue.component('task', {
+  template: '<li><slot></slot></li>'
+}); // Vue.component('agencies', require('./components/Agencies.vue').default);
+// Vue.prototype.$http = axios;
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+    showModal: false,
+    couponAngewandt: false,
+    skills: []
+  },
+  methods: {
+    onCouponApplied: function onCouponApplied() {
+      this.couponAngewandt = true;
+    }
+  },
+  created: function created() {
+    Event.listen('applied', function () {
+      return alert('event handled');
+    });
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/api/skills').then(function (response) {
+      return _this.skills = response.data;
+    }); // this.$http.get('/api/skills').then(response=>this.skills = response.data);
+  }
 });
 
 /***/ }),
@@ -45731,8 +45977,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/workspace/Hussein/larticles_api-master/resources/assets/js/app.js */"./resources/assets/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/html/workspace/Hussein/larticles_api-master/resources/assets/sass/app.scss */"./resources/assets/sass/app.scss");
+__webpack_require__(/*! E:\Laptop\development\PHP\Laravel\Projects\articles_vue_api\vue_api_tut\resources\assets\js\app.js */"./resources/assets/js/app.js");
+module.exports = __webpack_require__(/*! E:\Laptop\development\PHP\Laravel\Projects\articles_vue_api\vue_api_tut\resources\assets\sass\app.scss */"./resources/assets/sass/app.scss");
 
 
 /***/ })
