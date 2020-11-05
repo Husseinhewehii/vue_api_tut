@@ -42,3 +42,5 @@ Route::get('/vue-test-6', function () {
 Route::get('/vue-test-7', function () {
     return view('vue_test_7');
 });
+
+Route::get('/projects/{projects}','ProjectController@create')->name('create_project');
