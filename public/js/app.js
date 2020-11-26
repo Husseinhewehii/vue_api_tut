@@ -45819,7 +45819,7 @@ var app = new Vue({
     onSuccess: function onSuccess(response) {
       alert(response.data.message);
       this.name = '';
-      this.description = ''; ///
+      this.description = '';
     }
   },
   created: function created() {
