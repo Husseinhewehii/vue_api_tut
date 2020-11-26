@@ -15,16 +15,16 @@
         <form action="/projects" method="post" @submit.prevent="onSubmit" @keydown="fehler.clear($event.target.name)">
             <div class="control">
                 <label for="name" class="label">Project Name: </label>
-                <input type="text" name="name" class="input" id="name" v-model="name">
+                <input type="text" name="name" class="input" id="name" v-model="form.name">
                 {{--<input type="text" name="name" class="input" id="name" v-model="name" @keydown="fehler.clear('name')">--}}
-                <span class="help is-danger" v-if="fehler.has('name')" v-text="fehler.get('name')"></span>
+                <span class="help is-danger" v-if="fehler.has('form.name')" v-text="fehler.get('form.name')"></span>
             </div>
 
             <div class="control">
                 <label for="description" class="label">Project Description: </label>
-                <input type="text" name="description" class="input" id="description" v-model="description">
+                <input type="text" name="description" class="input" id="description" v-model="form.description">
                 {{--<input type="text" name="description" class="input" id="description" v-model="description" @keydown="fehler.clear('description')">--}}
-                <span class="help is-danger" v-if="fehler.has('description')" v-text="fehler.get('description')" ></span>
+                <span class="help is-danger" v-if="fehler.has('form.description')" v-text="fehler.get('form.description')" ></span>
             </div>
 
             <div class="control">

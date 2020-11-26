@@ -241,6 +241,20 @@ class Errors {
     }
 }
 
+class Form {
+    constructor(data){
+        // this.data = data;
+        for (let field in data){
+            this[field] = data[field];
+        }
+    }
+
+
+    reset(){
+
+    }
+}
+
 
 // Vue.prototype.$http = axios;
 const app = new Vue({
@@ -249,9 +263,12 @@ const app = new Vue({
         // showModal:false,
         // couponAngewandt : false,
         // skills: [],
-        name: '',
-        description: '',
-        fehler: new Errors()
+
+        fehler: new Errors(),
+        form: new Form({
+            name: '',
+            description: '',
+        }),
     },
     methods:{
         onCouponApplied(){

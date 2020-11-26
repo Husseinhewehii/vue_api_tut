@@ -45790,6 +45790,24 @@ var Errors = /*#__PURE__*/function () {
   }]);
 
   return Errors;
+}();
+
+var Form = /*#__PURE__*/function () {
+  function Form(data) {
+    _classCallCheck(this, Form);
+
+    // this.data = data;
+    for (var field in data) {
+      this[field] = data[field];
+    }
+  }
+
+  _createClass(Form, [{
+    key: "reset",
+    value: function reset() {}
+  }]);
+
+  return Form;
 }(); // Vue.prototype.$http = axios;
 
 
@@ -45799,9 +45817,11 @@ var app = new Vue({
     // showModal:false,
     // couponAngewandt : false,
     // skills: [],
-    name: '',
-    description: '',
-    fehler: new Errors()
+    fehler: new Errors(),
+    form: new Form({
+      name: '',
+      description: ''
+    })
   },
   methods: {
     onCouponApplied: function onCouponApplied() {
