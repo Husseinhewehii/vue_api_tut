@@ -213,17 +213,59 @@ Vue.component('task',{
 // Vue.component('agencies', require('./components/Agencies.vue').default);
 
 
+class Errors {
+    constructor(){
+        this.errors = {};
+    }
+
+    get(field){
+        if(this.errors[field]){
+           return this.errors[field][0];
+        }
+    }
+
+    has(field){
+        return this.errors.hasOwnProperty(field);
+    }
+
+    any(){
+        return Object.keys(this.errors).length > 0;
+    }
+
+    record(errors){
+        this.errors = errors;
+    }
+
+    clear(field){
+        delete this.errors[field];
+    }
+}
+
+
 // Vue.prototype.$http = axios;
 const app = new Vue({
     el: '#app',
     data:{     
-        showModal:false,
-        couponAngewandt : false,
-        skills: []
+        // showModal:false,
+        // couponAngewandt : false,
+        // skills: [],
+        name: '',
+        description: '',
+        fehler: new Errors()
     },
     methods:{
         onCouponApplied(){
             this.couponAngewandt = true;
+        },
+        onSubmit(){
+            axios.post('/projects', this.$data)
+                .then(response => this.onSuccess(response))
+                .catch(error => this.fehler.record(error.response.data.errors));
+        },
+        onSuccess(response){
+            alert(response.data.message)
+            this.name = '';
+            this.description = '';
         }
     },
     created(){

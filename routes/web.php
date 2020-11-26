@@ -43,4 +43,5 @@ Route::get('/vue-test-7', function () {
     return view('vue_test_7');
 });
 
-Route::get('/projects/{projects}','ProjectController@create')->name('create_project');
+Route::get('/projects/create','ProjectController@create')->name('create_project');
+Route::post('/projects','ProjectController@store')->name('store_project');

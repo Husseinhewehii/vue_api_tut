@@ -45752,18 +45752,74 @@ Vue.component('task-list', {
 Vue.component('task', {
   template: '<li><slot></slot></li>'
 }); // Vue.component('agencies', require('./components/Agencies.vue').default);
-// Vue.prototype.$http = axios;
+
+var Errors = /*#__PURE__*/function () {
+  function Errors() {
+    _classCallCheck(this, Errors);
+
+    this.errors = {};
+  }
+
+  _createClass(Errors, [{
+    key: "get",
+    value: function get(field) {
+      if (this.errors[field]) {
+        return this.errors[field][0];
+      }
+    }
+  }, {
+    key: "has",
+    value: function has(field) {
+      return this.errors.hasOwnProperty(field);
+    }
+  }, {
+    key: "any",
+    value: function any() {
+      return Object.keys(this.errors).length > 0;
+    }
+  }, {
+    key: "record",
+    value: function record(errors) {
+      this.errors = errors;
+    }
+  }, {
+    key: "clear",
+    value: function clear(field) {
+      delete this.errors[field];
+    }
+  }]);
+
+  return Errors;
+}(); // Vue.prototype.$http = axios;
+
 
 var app = new Vue({
   el: '#app',
   data: {
-    showModal: false,
-    couponAngewandt: false,
-    skills: []
+    // showModal:false,
+    // couponAngewandt : false,
+    // skills: [],
+    name: '',
+    description: '',
+    fehler: new Errors()
   },
   methods: {
     onCouponApplied: function onCouponApplied() {
       this.couponAngewandt = true;
+    },
+    onSubmit: function onSubmit() {
+      var _this = this;
+
+      axios.post('/projects', this.$data).then(function (response) {
+        return _this.onSuccess(response);
+      })["catch"](function (error) {
+        return _this.fehler.record(error.response.data.errors);
+      });
+    },
+    onSuccess: function onSuccess(response) {
+      alert(response.data.message);
+      this.name = '';
+      this.description = '';
     }
   },
   created: function created() {
@@ -45772,10 +45828,10 @@ var app = new Vue({
     });
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     axios.get('/api/skills').then(function (response) {
-      return _this.skills = response.data;
+      return _this2.skills = response.data;
     }); // this.$http.get('/api/skills').then(response=>this.skills = response.data);
   }
 });
@@ -45977,8 +46033,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\Laptop\development\PHP\Laravel\Projects\articles_vue_api\vue_api_tut\resources\assets\js\app.js */"./resources/assets/js/app.js");
-module.exports = __webpack_require__(/*! E:\Laptop\development\PHP\Laravel\Projects\articles_vue_api\vue_api_tut\resources\assets\sass\app.scss */"./resources/assets/sass/app.scss");
+__webpack_require__(/*! /var/www/html/workspace/Hussein/larticles_api-master/resources/assets/js/app.js */"./resources/assets/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/workspace/Hussein/larticles_api-master/resources/assets/sass/app.scss */"./resources/assets/sass/app.scss");
 
 
 /***/ })
