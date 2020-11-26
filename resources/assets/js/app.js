@@ -266,6 +266,7 @@ const app = new Vue({
             alert(response.data.message)
             this.name = '';
             this.description = '';
+            ///
         }
     },
     created(){
