@@ -237,21 +237,57 @@ class Errors {
     }
 
     clear(field){
-        delete this.errors[field];
+        if (field) {
+            delete this.errors[field];
+            return ;
+            }
+        this.errors = {};
     }
 }
 
 class Form {
     constructor(data){
-        // this.data = data;
+        // console.log(data);
+        this.originalData = data;
         for (let field in data){
             this[field] = data[field];
         }
+        this.fehler = new Errors();
+    }
+
+
+
+    data(){
+        let data = Object.assign({}, this);
+
+        delete data.originalData;
+        delete data.fehler;
+
+        return data;
     }
 
 
     reset(){
+        for (let field in this.originalData)
+        {
+            this[field] = '';
+        }
+    }
 
+    submit(requestType, url){
+        axios[requestType](url, this.data())
+            .then(this.onSuccess.bind(this))
+            .catch(this.onFail.bind(this))
+    }
+
+    onSuccess(response) {
+        alert(response.data.message);
+        this.fehler.clear();
+        this.reset();
+    }
+
+    onFail(error) {
+        this.fehler.record(error.response.data.errors);
     }
 }
 
@@ -264,7 +300,6 @@ const app = new Vue({
         // couponAngewandt : false,
         // skills: [],
 
-        fehler: new Errors(),
         form: new Form({
             name: '',
             description: '',
@@ -275,15 +310,15 @@ const app = new Vue({
             this.couponAngewandt = true;
         },
         onSubmit(){
-            axios.post('/projects', this.$data)
-                .then(response => this.onSuccess(response))
-                .catch(error => this.fehler.record(error.response.data.errors));
-        },
-        onSuccess(response){
-            alert(response.data.message)
-            this.name = '';
-            this.description = '';
+           this.form.submit('post', '/projects');
         }
+
+        // ,
+        // onSuccess(response){
+        //     alert(response.data.message)
+        //     this.name = '';
+        //     this.description = '';
+        // }
     },
     created(){
         Event.listen('applied',()=>alert('event handled'));

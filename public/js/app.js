@@ -45785,7 +45785,12 @@ var Errors = /*#__PURE__*/function () {
   }, {
     key: "clear",
     value: function clear(field) {
-      delete this.errors[field];
+      if (field) {
+        delete this.errors[field];
+        return;
+      }
+
+      this.errors = {};
     }
   }]);
 
@@ -45796,15 +45801,48 @@ var Form = /*#__PURE__*/function () {
   function Form(data) {
     _classCallCheck(this, Form);
 
-    // this.data = data;
+    // console.log(data);
+    this.originalData = data;
+
     for (var field in data) {
       this[field] = data[field];
     }
+
+    this.fehler = new Errors();
   }
 
   _createClass(Form, [{
+    key: "data",
+    value: function data() {
+      var data = Object.assign({}, this);
+      delete data.originalData;
+      delete data.fehler;
+      return data;
+    }
+  }, {
     key: "reset",
-    value: function reset() {}
+    value: function reset() {
+      for (var field in this.originalData) {
+        this[field] = '';
+      }
+    }
+  }, {
+    key: "submit",
+    value: function submit(requestType, url) {
+      axios[requestType](url, this.data()).then(this.onSuccess.bind(this))["catch"](this.onFail.bind(this));
+    }
+  }, {
+    key: "onSuccess",
+    value: function onSuccess(response) {
+      alert(response.data.message);
+      this.fehler.clear();
+      this.reset();
+    }
+  }, {
+    key: "onFail",
+    value: function onFail(error) {
+      this.fehler.record(error.response.data.errors);
+    }
   }]);
 
   return Form;
@@ -45817,7 +45855,6 @@ var app = new Vue({
     // showModal:false,
     // couponAngewandt : false,
     // skills: [],
-    fehler: new Errors(),
     form: new Form({
       name: '',
       description: ''
@@ -45828,19 +45865,14 @@ var app = new Vue({
       this.couponAngewandt = true;
     },
     onSubmit: function onSubmit() {
-      var _this = this;
+      this.form.submit('post', '/projects');
+    } // ,
+    // onSuccess(response){
+    //     alert(response.data.message)
+    //     this.name = '';
+    //     this.description = '';
+    // }
 
-      axios.post('/projects', this.$data).then(function (response) {
-        return _this.onSuccess(response);
-      })["catch"](function (error) {
-        return _this.fehler.record(error.response.data.errors);
-      });
-    },
-    onSuccess: function onSuccess(response) {
-      alert(response.data.message);
-      this.name = '';
-      this.description = '';
-    }
   },
   created: function created() {
     Event.listen('applied', function () {
@@ -45848,10 +45880,10 @@ var app = new Vue({
     });
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this = this;
 
     axios.get('/api/skills').then(function (response) {
-      return _this2.skills = response.data;
+      return _this.skills = response.data;
     }); // this.$http.get('/api/skills').then(response=>this.skills = response.data);
   }
 });
