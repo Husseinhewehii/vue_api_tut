@@ -45801,7 +45801,6 @@ var Form = /*#__PURE__*/function () {
   function Form(data) {
     _classCallCheck(this, Form);
 
-    // console.log(data);
     this.originalData = data;
 
     for (var field in data) {
@@ -45814,35 +45813,75 @@ var Form = /*#__PURE__*/function () {
   _createClass(Form, [{
     key: "data",
     value: function data() {
-      var data = Object.assign({}, this);
-      delete data.originalData;
-      delete data.fehler;
+      // let data = Object.assign({}, this);
+      //
+      // delete data.originalData;
+      // delete data.fehler;
+      var data = {};
+
+      for (var property in this.originalData) {
+        data[property] = this[property];
+      }
+
       return data;
     }
   }, {
     key: "reset",
     value: function reset() {
+      this.fehler.clear();
+
       for (var field in this.originalData) {
         this[field] = '';
       }
     }
   }, {
+    key: "post",
+    value: function post(url) {
+      return this.submit('post', url);
+    }
+  }, {
+    key: "delete",
+    value: function _delete(url) {
+      return this.submit('delete', url);
+    }
+  }, {
     key: "submit",
     value: function submit(requestType, url) {
-      axios[requestType](url, this.data()).then(this.onSuccess.bind(this))["catch"](this.onFail.bind(this));
+      var _this = this;
+
+      return new Promise(function (resolve, reject) {
+        axios[requestType](url, _this.data()).then(function (response) {
+          _this.onSuccess(response.data);
+
+          resolve(response.data);
+        })["catch"](function (error) {
+          _this.onFail(error.response.data.errors);
+
+          reject(error.response.data.errors);
+        });
+      }); // axios[requestType](url, this.data())
+      //     .then(this.onSuccess.bind(this))
+      //     .catch(this.onFail.bind(this))
     }
   }, {
     key: "onSuccess",
-    value: function onSuccess(response) {
-      alert(response.data.message);
-      this.fehler.clear();
+    value: function onSuccess(data) {
+      alert(data.message);
       this.reset();
-    }
+    } // onSuccess(response) {
+    //     alert(response.data.message);
+    //     this.fehler.clear();
+    //     this.reset();
+    // }
+
   }, {
     key: "onFail",
-    value: function onFail(error) {
-      this.fehler.record(error.response.data.errors);
-    }
+    value: function onFail(errors) {
+      this.fehler.record(errors);
+    } // onFail(error) {
+    //     this.fehler.record(error.response.data.errors);
+    // }
+
   }]);
 
   return Form;
@@ -45865,14 +45904,12 @@ var app = new Vue({
       this.couponAngewandt = true;
     },
     onSubmit: function onSubmit() {
-      this.form.submit('post', '/projects');
-    } // ,
-    // onSuccess(response){
-    //     alert(response.data.message)
-    //     this.name = '';
-    //     this.description = '';
-    // }
-
+      this.form.submit('post', '/projects').then(function (data) {
+        return console.log(data);
+      })["catch"](function (errors) {
+        return console.log(errors);
+      }); // this.form.delete('/projects');
+    }
   },
   created: function created() {
     Event.listen('applied', function () {
@@ -45880,10 +45917,10 @@ var app = new Vue({
     });
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     axios.get('/api/skills').then(function (response) {
-      return _this.skills = response.data;
+      return _this2.skills = response.data;
     }); // this.$http.get('/api/skills').then(response=>this.skills = response.data);
   }
 });
