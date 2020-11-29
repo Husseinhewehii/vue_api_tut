@@ -9,3 +9,6 @@ module.exports = {
         publicPath: "./public"
     }
 }
+
+
+// http://lodexcart.lodex-solutions.com/en
