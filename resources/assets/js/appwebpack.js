@@ -1,12 +1,18 @@
 import Form from './core/form';
 import Vue from 'vue';
 import axios from 'axios';
+import Example from './components/Example';
 
 window.axios = axios;
 window.Form = Form;
 
 const app = new Vue({
     el: '#app',
+
+    components:{
+        Example
+    },
+
     data:{
         // showModal:false,
         // couponAngewandt : false,
