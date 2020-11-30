@@ -1,1 +1,48 @@
-alert('appwebpackfile');
+import Form from './core/form';
+import Vue from 'vue';
+import axios from 'axios';
+
+window.axios = axios;
+window.Form = Form;
+
+const app = new Vue({
+    el: '#app',
+    data:{
+        // showModal:false,
+        // couponAngewandt : false,
+        // skills: [],
+
+        form: new Form({
+            name: '',
+            description: '',
+        }),
+    },
+    methods:{
+        onCouponApplied(){
+            this.couponAngewandt = true;
+        },
+        onSubmit(){
+            this.form.submit('post', '/projects')
+                .then(data => console.log(data))
+                .catch(errors => console.log(errors));
+
+            // this.form.delete('/projects');
+        }
+
+    },
+    created(){
+        Event.listen('applied',()=>alert('event handled'));
+    },
+    mounted(){
+        axios.get('/api/skills').then(response=>this.skills = response.data);
+        // this.$http.get('/api/skills').then(response=>this.skills = response.data);
+    }
+});
+
+
+module.exports = {
+    //...
+    performance: {
+        hints: false
+    }
+};
