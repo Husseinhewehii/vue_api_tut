@@ -12,7 +12,9 @@
 </head>
 <body>
     <div id="app" class="container">
+        
         <form action="/projects" method="post" @submit.prevent="onSubmit" @keydown="form.fehler.clear($event.target.name)">
+            <example></example>
             <div class="control">
                 <label for="name" class="label">Project Name: </label>
                 <input type="text" name="name" class="input" id="name" v-model="form.name">

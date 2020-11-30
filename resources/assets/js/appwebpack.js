@@ -14,10 +14,6 @@ const app = new Vue({
     },
 
     data:{
-        // showModal:false,
-        // couponAngewandt : false,
-        // skills: [],
-
         form: new Form({
             name: '',
             description: '',
