@@ -9,10 +9,13 @@
   "private": true,
   "scripts": {
     "webpack": "webpack",
-    "dev": "webpack --hide-modules --watch"
+    "dev": "webpack --hide-modules --watch",
+    "production": "export NODE_ENV=production && webpack --hide-modules"
   },
   "devDependencies": {
     "axios": "^0.19.2",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
     "bootstrap": "^4.5.0",
     "bootstrap-sass": "^3.4.1",
     "cross-env": "^7.0",
