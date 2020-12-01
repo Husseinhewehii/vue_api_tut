@@ -218,37 +218,37 @@ Vue.component('task',{
 
 
 
-// Vue.prototype.$http = axios;
-// const app = new Vue({
-//     el: '#app',
-//     data:{
-//         // showModal:false,
-//         // couponAngewandt : false,
-//         // skills: [],
-//
-//         form: new Form({
-//             name: '',
-//             description: '',
-//         }),
-//     },
-//     methods:{
-//         onCouponApplied(){
-//             this.couponAngewandt = true;
-//         },
-//         onSubmit(){
-//            this.form.submit('post', '/projects')
-//                .then(data => console.log(data))
-//                .catch(errors => console.log(errors));
-//
-//            // this.form.delete('/projects');
-//         }
-//
-//     },
-//     created(){
-//         Event.listen('applied',()=>alert('event handled'));
-//     },
-//     mounted(){
-//         axios.get('/api/skills').then(response=>this.skills = response.data);
-//         // this.$http.get('/api/skills').then(response=>this.skills = response.data);
-//     }
-// });
+Vue.prototype.$http = axios;
+const app = new Vue({
+    el: '#app',
+    data:{
+        // showModal:false,
+        // couponAngewandt : false,
+        // skills: [],
+
+        form: new Form({
+            name: '',
+            description: '',
+        }),
+    },
+    methods:{
+        onCouponApplied(){
+            this.couponAngewandt = true;
+        },
+        onSubmit(){
+           this.form.submit('post', '/projects')
+               .then(data => console.log(data))
+               .catch(errors => console.log(errors));
+
+           // this.form.delete('/projects');
+        }
+
+    },
+    created(){
+        Event.listen('applied',()=>alert('event handled'));
+    },
+    mounted(){
+        axios.get('/api/skills').then(response=>this.skills = response.data);
+        // this.$http.get('/api/skills').then(response=>this.skills = response.data);
+    }
+});

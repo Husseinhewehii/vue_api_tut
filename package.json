@@ -1,16 +1,7 @@
 {
-  "name": "package.json",
-  "version": "6.0.0",
-  "description": "vue test",
-  "main": "webpack.config.js",
-  "directories": {
-    "test": "tests"
-  },
   "private": true,
   "scripts": {
-    "webpack": "webpack",
-    "dev": "webpack --hide-modules --watch",
-    "production": "export NODE_ENV=production && webpack --hide-modules"
+    "webpack": "cross-env NODE_ENV=development webpack --progress --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
     "axios": "^0.19.2",
@@ -21,7 +12,7 @@
     "cross-env": "^7.0",
     "express": "^4.17.1",
     "jquery": "^3.2",
-    "laravel-mix": "^6.0.0-beta.4",
+    "laravel-mix": "^6.0.0-beta.14",
     "lodash": "^4.17.13",
     "popper.js": "^1.12",
     "resolve-url-loader": "^3.1.2",
@@ -32,21 +23,5 @@
     "webpack": "^5.9.0",
     "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.0",
-    "@fortawesome/free-solid-svg-icons": "^5.13.0",
-    "bulma": "^0.9.1",
-    "node-sass": "^4.14.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Husseinhewehii/vue_api_tut.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Husseinhewehii/vue_api_tut/issues"
-  },
-  "homepage": "https://github.com/Husseinhewehii/vue_api_tut#readme"
+  }
 }

@@ -35,3 +35,60 @@
 //        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --disable-host-check --config=node_modules/laravel-mix/setup/webpack.config.js",
 //        "prod": "npm run production",
 //        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+
+
+
+
+
+{
+  "name": "package.json",
+  "version": "6.0.0",
+  "description": "vue test",
+  "main": "webpack.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "private": true,
+  "scripts": {
+    "webpack": "webpack",
+    "dev": "webpack --hide-modules --watch",
+    "production": "export NODE_ENV=production && webpack --hide-modules"
+  },
+  "devDependencies": {
+    "axios": "^0.19.2",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "bootstrap": "^4.5.0",
+    "bootstrap-sass": "^3.4.1",
+    "cross-env": "^7.0",
+    "express": "^4.17.1",
+    "jquery": "^3.2",
+    "laravel-mix": "^6.0.0-beta.14",
+    "lodash": "^4.17.13",
+    "popper.js": "^1.12",
+    "resolve-url-loader": "^3.1.2",
+    "sass": "^1.20.1",
+    "sass-loader": "^8.0.0",
+    "vue": "^2.6.12",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^5.9.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "bulma": "^0.9.1",
+    "node-sass": "^4.14.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Husseinhewehii/vue_api_tut.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Husseinhewehii/vue_api_tut/issues"
+  },
+  "homepage": "https://github.com/Husseinhewehii/vue_api_tut#readme"
+}
